@@ -9,7 +9,8 @@ import numpy as np
 import pandas as pd
 
 
-folder = 'E:\\NormalFault\\Tltd_1degS_2km_30L'
+#folder = 'E:\\NormalFault\\Tltd_1degS_2km_30L'
+folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\MOVE\\Tltd_1degS_2km_30L'
 
 os.chdir(folder)
 
@@ -32,8 +33,12 @@ def z_invert(data):
     
     # multiply z by -1
     for i in np.arange(0,len(data)):
+        # select only vertices (does not edit individual triangles)
         if data[i][0] == 'VRTX':
+            # Multiple each vertex z by -1
             data[i][-1] = str(np.multiply(float(data[i][-1]), -1))
+            
+            data[i][-1] = str((float(data[i][-1])+2000))
     
     # replace header keyword to indicate depth format
     data[10] = ['ZNEGATIVE', 'Depth']
@@ -44,11 +49,11 @@ data_inv = z_invert(data)
 
 d = data_inv
 
-##with open("newfile.ts", "w") as f:
-for i in d:
-    out = "\n".join(d)
-    f.writelines(out)
-#
+with open(fl[26], 'w') as f:
+    for i in d:
+        out = "\n".join(str(d))
+        f.writelines(out)
+
 #for line in d:
 #    d[line] = ['\t'.join(d[line])]
 
