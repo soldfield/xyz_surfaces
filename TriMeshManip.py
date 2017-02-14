@@ -2,6 +2,14 @@
 """
 Created on Wed Oct 19 17:16:40 2016
 
+Series of tools for trimesh manipulation.  Initially this tool takes a trimesh
+in gocad format and inverts the z axis by a '-1' multiplication.
+
+Updates header information to say ['ZNEGATIVE', 'Depth'].
+
+This annotation is one-way, i.e. positive to negative depth domain only currently.
+
+
 @author: ee10sjo
 """
 import os
@@ -9,18 +17,11 @@ import numpy as np
 import pandas as pd
 
 
-#folder = 'E:\\NormalFault\\Tltd_1degS_2km_30L'
-folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\MOVE\\Tltd_1degS_2km_30L'
+def grab_data(file):
+    with open(file, 'r') as f:
+        data = f.readlines()
+    return data
 
-os.chdir(folder)
-
-fl = os.listdir(folder)
-
-
-### For testing, selects horizon Hz5.ts
-
-with open(fl[26], 'r') as f:
-    data = f.readlines()
 
 def z_invert(data):
     # split lines, remove linebreak marker
@@ -38,29 +39,46 @@ def z_invert(data):
             # Multiple each vertex z by -1
             data[i][-1] = str(np.multiply(float(data[i][-1]), -1))
             
-            data[i][-1] = str((float(data[i][-1])+2000))
+            #data[i][-1] = str((float(data[i][-1])+2000))
     
     # replace header keyword to indicate depth format
     data[10] = ['ZNEGATIVE', 'Depth']
     
     return data
 
-data_inv = z_invert(data)
 
-d = data_inv
+def output_file(fn, data):
+    with open(fn, "w") as f:
+        for i in data:
+            out = ["%s\t" % item for item in i]
+            #print(out)
+            #return(out)
+            out = out + ['\n']
+            f.writelines(out)
 
-with open(fl[26], 'w') as f:
-    for i in d:
-        out = "\n".join(str(d))
-        f.writelines(out)
 
-#for line in d:
-#    d[line] = ['\t'.join(d[line])]
+#folder = 'E:\\NormalFault\\Tltd_1degS_2km_30L'
+folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\MOVE\\SimpleNF_Models\\ZZ_ExportedLayers\\Dmax10_renamed'
 
-#adds tab to every break
-with open("newfile.ts", "w") as f:
-    for i in d:
-        out = ["%s\t" % item for item in i]
-        f.writelines(out)
+def folder_Z_invert(folder):
+    os.chdir(folder)
+    fl = os.listdir(folder)
+    for fn in fl:
+        d = grab_data(fn)
+        d = z_invert(d)
+        name = str(fn[:-3])+'_Z_Inv.ts'
+        output_file(name, d)
+
+folder_Z_invert(folder)
+
+### For testing, selects horizon Hz5.ts
+
+#file = fl[3]
+#
+#data = grab_data(file)
+#
+#d = z_invert(data)
+#
+#out = output_file("newfile.ts", d)
 
 
