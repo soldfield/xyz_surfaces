@@ -56,10 +56,6 @@ def output_file(fn, data):
             out = out + ['\n']
             f.writelines(out)
 
-
-#folder = 'E:\\NormalFault\\Tltd_1degS_2km_30L'
-folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\MOVE\\SimpleNF_Models\\ZZ_ExportedLayers\\Dmax10_renamed'
-
 def folder_Z_invert(folder):
     os.chdir(folder)
     fl = os.listdir(folder)
@@ -69,9 +65,12 @@ def folder_Z_invert(folder):
         name = str(fn[:-3])+'_Z_Inv.ts'
         output_file(name, d)
 
-folder_Z_invert(folder)
 
-### For testing, selects horizon Hz5.ts
+
+folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\MOVE\\SimpleNF_Models\\ZZ_ExportedLayers\\Dmax5_Inverted'
+
+
+folder_Z_invert(folder)
 
 #file = fl[3]
 #
