@@ -57,11 +57,11 @@ z = z * WaveAmp
 ## Add flats to either side of wavelet
 # Below X side
 x1 = np.arange(Xmin, WaveXmin, Spacing)
-z1 = np.zeros(((WaveXmin - Xmin) / Spacing))
+z1 = np.zeros(int((WaveXmin - Xmin) / Spacing))
 
 # Above X side
 x2 = np.arange(WaveXmax, (Xmax + Spacing), Spacing)
-z2 = np.zeros((((Xmax - WaveXmax) + Spacing) / Spacing))
+z2 = np.zeros(int(((Xmax - WaveXmax) + Spacing) / Spacing))
 
 # Append arrays for each coordinate
 Xall = np.hstack((x1, x, x2))
@@ -97,5 +97,5 @@ plt.show()
 
 #Output to text file in working directory, format 16 character string per column
 
-np.savetxt('anticline_xyz.txt', (xyz_stk), fmt='%16s')
+#np.savetxt('anticline_xyz.txt', (xyz_stk), fmt='%16s')
 
