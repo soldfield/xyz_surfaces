@@ -31,15 +31,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## Name variables:
-Xmin = 0.
-Xmax = 4000.
-Ymin = 0.
-Ymax = 2000.
-WaveXmin = 1000.
-WaveXmax = 3000.
-WaveAmp = 800.
-Wavelength = 1600.
-Spacing = 100.
+#Xmin = 0.
+#Xmax = 4000.
+#Ymin = 0.
+#Ymax = 2000.
+#WaveXmin = 1000.
+#WaveXmax = 3000.
+#WaveAmp = 800.
+#Wavelength = 1600.
+#Spacing = 100.
 
 
 def stratwedge(Xmin, Xmax, Ymin, Ymax, WaveXmin, WaveXmax, WaveAmp, Wavelength, Spacing):
@@ -103,47 +103,31 @@ def stratwedge(Xmin, Xmax, Ymin, Ymax, WaveXmin, WaveXmax, WaveAmp, Wavelength, 
     
     #Output to text file in working directory, format 16 character string per column
 
-def coswave(height, wavelength, spacing):
-    xs = np.arange(0, wavelength+1, spacing)
-    ys = (height/2)*np.cos((2*np.pi*x)/wavelength)
-
+def coswave(depth, width, height, spacing):
+    xs = np.arange(0, width+1, spacing)
+    ys= depth + (np.cos((2*np.pi*xs)/width)*0.5)*height
+    
     return xs, ys
 
-def stratwedge2(Xwidth, Ywidth, Ztop, spacing, layers):
-#               Ymin, Ymax, WaveXmin, WaveXmax, WaveAmp, Wavelength, Spacing):
-    Xmin = 0
-    Xmax = Xmin + Xwidth
-    Ymin = 0
-    Ymax = Ywidth + Ymin
+def planehz(depth, width, spacing):
+    xs = np.arange(0, width, spacing)
+    ys = np.empty_like(xs)
+    ys = np.full(xs.size, depth)
     
-    surf_name = []
-    
-    for i in np.arange(layers):
-        surf_name.append("line"+str(i+1))
-    
-    
-    Xsi = np.arange(Xmin, Xmax, spacing)
-    Ysi = np.arange(Ymin, Ymax, spacing)
-    Zsi = 
-    
-    Xi
-    Yi
-    Zi
-    
-    surf_name[-1] = 
-    
-    
-    x1 = np.arange(Xmin, Xmax, spacing)
-    y1 = np.zeros((len(x1)))
-    z1 = height * np.sin((x*2*np.pi())/wavelength)
-    
-    Xall = 
-    Yall = 
-    Zall = 
+    return xs, ys
+
+
     
 
 
-coswave(2, 32, 1)
+xs, ys = coswave(4, 64, 3, 1)
+xs1, ys1 = planehz(2, 64, 1)
+plt.plot(xs, ys)
+plt.plot(xs1, ys1)
 
-    
+
+layers = 
+layer_spacing = 
+depth_top = 
+model_height =     
 
