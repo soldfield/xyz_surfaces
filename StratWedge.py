@@ -105,29 +105,52 @@ def stratwedge(Xmin, Xmax, Ymin, Ymax, WaveXmin, WaveXmax, WaveAmp, Wavelength, 
 
 def coswave(depth, width, height, spacing):
     xs = np.arange(0, width+1, spacing)
-    ys= depth + (np.cos((2*np.pi*xs)/width)*0.5)*height
+    ys= depth + (np.cos((2*np.pi*xs)/width)*0.5)*height+ height/2
     
     return xs, ys
 
 def planehz(depth, width, spacing):
-    xs = np.arange(0, width, spacing)
+    xs = np.arange(0, width+spacing, spacing)
     ys = np.empty_like(xs)
     ys = np.full(xs.size, depth)
     
     return xs, ys
 
+#xs, ys = coswave(4, 64, 3, 1)
+#xs1, ys1 = planehz(4, 64, 1)
+#plt.plot(xs, ys)
+#plt.plot(xs1, ys1)
+#plt.show()
 
+dz_pinch = 1000
+dz_model = 50
+Nl = layers_count = 12 # including top and bottom
+depth_top = 2000
+dx = model_width = 1000
+Sx = samplingx = 1
+
+xlen = int(dx/Sx)+1
     
+stk = np.zeros([Nl+1, xlen])
+
+stk[0,:], stk[1,:]= coswave(depth_top, dx, dz_model, Sx)
+stk[-1, :] = planehz(depth_top, dx, Sx)[1]
+
+# x series = stk[0,:]
+# base (cosine) = stk[1,:]
+# top = stk[-1,:]
+
+for i in np.arange(xlen):
+    z_int = (stk[1,i]-stk[-1, i])/Sx
+    for j in np.arange(1, Nl):
+        stk[j,i]=depth_top+stk[0,j]+j*z_int
 
 
-xs, ys = coswave(4, 64, 3, 1)
-xs1, ys1 = planehz(2, 64, 1)
-plt.plot(xs, ys)
-plt.plot(xs1, ys1)
+for i in np.arange(1,stk.shape[0]-1):
+    plt.plot(stk[0,:], stk[i,:])
+plt.plot(stk[0,:],stk[-1,:])
 
 
-layers = 
-layer_spacing = 
-depth_top = 
-model_height =     
+
+
 
