@@ -150,15 +150,9 @@ dz_pinch = 50
 xspacing = 10
 Nl = 12
 
-costop = depth + dz_pinch
-dz_cos = dz_model - dz_pinch
-
-a, b = coswave(costop, width, dz_cos, xspacing)
-
-#plt.show()
 
 stk = CosLayerStk(depth, width, dz_pinch, dz_model, xspacing)
 
-plt.plot(stk[0,:], stk[-4,:])
-plt.plot(a,b, 'k--')
+
+
 
