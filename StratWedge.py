@@ -116,46 +116,49 @@ def planehz(depth, width, spacing):
     
     return xs, ys
 
-#xs, ys = coswave(4, 64, 3, 1)
-#xs1, ys1 = planehz(4, 64, 1)
-#plt.plot(xs, ys)
-#plt.plot(xs1, ys1)
-#plt.show()
 
-
-def CosLayerStk():
-    dz_pinch = 1000
-    dz_model = 50
-    Nl = layers_count = 12 # including top and bottom
-    depth_top = 2000
-    dx = model_width = 1000
-    Sx = samplingx = 1
+def CosLayerStk(depth_top, dx, dz_pinch, dz_model, xspacing, Nl=12):
+    Sx = xspacing # x sample rate
     
     xlen = int(dx/Sx)+1
-    Nl += 1
-        
-    stk = np.zeros([Nl+1, xlen])
+    stk = np.zeros([Nl+2, xlen])
     
+    ### Set parameters for cosine curve
+    costop = depth_top + dz_pinch
+    dz_cos = dz_model - dz_pinch
     
-    stk[0,:], stk[1,:]= coswave(depth_top, dx, dz_model, Sx)
+    stk[0,:], stk[1,:]= coswave(costop, dx, dz_cos, Sx)
+    
     stk[-1, :] = planehz(depth_top, dx, Sx)[1]
     
-    # x series = stk[0,:]
-    # base (cosine) = stk[1,:]
-    # top = stk[-1,:]
-    
     for i in np.arange(xlen):
-        z_int = (stk[1,i]-stk[-1, i])/Sx
-        for j in np.arange(1, Nl):
-            stk[j,i]=depth_top+stk[0,j]+j*z_int
+        z_int = (stk[1,i]-stk[-1, i])/Nl
+        for j in np.arange(2, Nl+1):
+            stk[j,i]=stk[-1,i]+z_int*(j-1)
     
-    
-    for i in np.arange(1,stk.shape[0]-1):
+    for i in np.arange(1,stk.shape[0]):
         plt.plot(stk[0,:], stk[i,:])
-    plt.plot(stk[0,:],stk[-1,:])
     
     return stk
 
-stk = CosLayerStk()
 
+
+depth = 2000
+width = 1000
+dz_model = 500
+dz_pinch = 50
+xspacing = 10
+Nl = 12
+
+costop = depth + dz_pinch
+dz_cos = dz_model - dz_pinch
+
+a, b = coswave(costop, width, dz_cos, xspacing)
+
+#plt.show()
+
+stk = CosLayerStk(depth, width, dz_pinch, dz_model, xspacing)
+
+plt.plot(stk[0,:], stk[-4,:])
+plt.plot(a,b, 'k--')
 
