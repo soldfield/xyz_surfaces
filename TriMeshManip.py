@@ -14,7 +14,8 @@ This annotation is one-way, i.e. positive to negative depth domain only currentl
 """
 import os
 import numpy as np
-import pandas as pd
+#import pandas as pd
+import glob
 
 
 def grab_data(file):
@@ -56,18 +57,23 @@ def output_file(fn, data):
             out = out + ['\n']
             f.writelines(out)
 
-def folder_Z_invert(folder):
-    os.chdir(folder)
-    fl = os.listdir(folder)
+
+def fl_Z_invert(fl):
     for fn in fl:
         d = grab_data(fn)
         d = z_invert(d)
         name = str(fn[:-3])+'_Z_Inv.ts'
         output_file(name, d)
 
+def folder_Z_invert(folder):
+    os.chdir(folder)
+    fl = os.listdir(folder)
+    fl = glob.glob('*.ts') # change file extn for polylines / trimesh
+    fl_Z_invert(fl)
 
 
-folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\MOVE\\SimpleNF_Models\\ZZ_ExportedLayers\\Dmax5_Inverted'
+
+folder = 'Y:\\ee10sjo\\Oldfields_PhD\\4_Applications\\Petrel\\201612_Simple_NF_Mods\\Dmax10_16mHz_meshes'
 
 
 folder_Z_invert(folder)
