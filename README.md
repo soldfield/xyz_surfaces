@@ -6,4 +6,4 @@ Currently a minimal viable product to produce a pseudo-3D surface parallel to xy
 
 Output may be imported directly to SLB Petrel software as general points.
 
-# Added tool for inverting the Z index of GOCAD Trimesh files
+Added tool for inverting the Z index of GOCAD Trimesh files
